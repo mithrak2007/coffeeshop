@@ -1,5 +1,6 @@
 // Change this to your deployed Render backend URL after deployment
-const API_BASE = 'https://your-backend.onrender.com/api';
+const API_BASE = 'https://coffeeshop-s15c.onrender.com/api';
+
 
 // Auth helpers
 const getToken = () => localStorage.getItem('brewco_token');
