@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu — Brew & Co.</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .menu-hero { padding: 8rem 4% 4rem; text-align: center; background: linear-gradient(to bottom, var(--espresso-mid), var(--espresso)); border-bottom: 1px solid var(--border); }
+    .menu-hero .eyebrow { display:block; margin-bottom:1rem; }
+    .menu-hero h1 { margin-bottom: 1rem; }
+    .menu-hero p { max-width: 500px; margin: 0 auto; }
+
+    /* Filter tabs */
+    .filter-bar { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 2.5rem 4% 0; }
+    .filter-btn {
+      padding: 0.6rem 1.4rem; border-radius: 30px; border: 1px solid var(--border);
+      background: transparent; color: var(--text-muted); cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600;
+      letter-spacing: 0.5px; transition: var(--transition);
+    }
+    .filter-btn:hover { color: var(--cream); border-color: var(--brown-light); }
+    .filter-btn.active { background: var(--gold); color: var(--espresso); border-color: var(--gold); }
+
+    /* Menu grid */
+    .menu-section { padding: 3rem 4% 6rem; max-width: 1200px; margin: 0 auto; }
+    .category-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem; color: var(--gold);
+      margin: 3rem 0 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 1.5rem; }
+    .menu-item-card {
+      background: var(--espresso-mid); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem;
+      transition: var(--transition); position: relative;
+      display: flex; flex-direction: column; gap: 0.75rem;
+    }
+    .menu-item-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: rgba(212,168,83,0.3); }
+    .menu-item-card.unavailable { opacity: 0.5; }
+    .item-header { display: flex; justify-content: space-between; align-items: flex-start; }
+    .item-header h3 { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.05rem; }
+    .item-price { font-size: 1.1rem; font-weight: 800; color: var(--gold); white-space: nowrap; margin-left: 0.5rem; }
+    .item-desc { font-size: 0.88rem; color: var(--text-muted); flex: 1; }
+    .item-footer { display: flex; justify-content: space-between; align-items: center; }
+    .item-tags { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+    .popular-badge { position: absolute; top: -8px; right: 1rem; background: var(--gold); color: var(--espresso); font-size: 0.65rem; font-weight: 800; padding: 0.2rem 0.6rem; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; }
+
+    /* Admin controls */
+    .admin-bar { background: rgba(212,168,83,0.1); border: 1px solid rgba(212,168,83,0.3); padding: 1rem 4%; display: flex; align-items: center; justify-content: space-between; }
+    .admin-bar p { font-size: 0.85rem; color: var(--gold); }
+    .admin-btn { padding: 0.5rem 1.2rem; }
+
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 1rem; backdrop-filter: blur(4px); }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--espresso-mid); border: 1px solid var(--border); border-radius: var(--radius); padding: 2.5rem; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; }
+    .modal h3 { margin-bottom: 2rem; font-size: 1.5rem; }
+    .modal-close { float: right; background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
+    .modal-footer { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem; }
+    .form-check { display: flex; align-items: center; gap: 0.75rem; }
+    .form-check input { width: auto; }
+  </style>
+</head>
+<body>
+  <nav id="navbar">
+    <a href="/index.html" class="nav-logo">Brew<span>&</span>Co.</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/index.html">Home</a></li>
+      <li><a href="/pages/menu.html" class="active">Menu</a></li>
+      <li><a href="/pages/reservation.html">Reserve</a></li>
+      <li><a href="/pages/about.html">About</a></li>
+      <li><a href="/pages/contact.html">Contact</a></li>
+    </ul>
+    <div id="nav-auth"></div>
+    <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="page-content">
+    <div class="menu-hero">
+      <span class="eyebrow">Our Offerings</span>
+      <h1>The Menu</h1>
+      <p>Every item crafted with intention. From our signature espresso to seasonal plates — there's something for every mood.</p>
+    </div>
+
+    <div id="adminBar" style="display:none;" class="admin-bar">
+      <p>⚡ Admin Mode — You can add, edit and delete menu items</p>
+      <button class="btn btn-primary btn-sm admin-btn" onclick="openAddModal()">+ Add Item</button>
+    </div>
+
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-btn active" onclick="filterMenu('all', this)">All</button>
+      <button class="filter-btn" onclick="filterMenu('espresso', this)">☕ Espresso</button>
+      <button class="filter-btn" onclick="filterMenu('cold-brew', this)">🧊 Cold Brew</button>
+      <button class="filter-btn" onclick="filterMenu('tea', this)">🍵 Tea</button>
+      <button class="filter-btn" onclick="filterMenu('pastry', this)">🥐 Pastry</button>
+      <button class="filter-btn" onclick="filterMenu('breakfast', this)">🍳 Breakfast</button>
+      <button class="filter-btn" onclick="filterMenu('lunch', this)">🥗 Lunch</button>
+      <button class="filter-btn" onclick="filterMenu('seasonal', this)">🍂 Seasonal</button>
+    </div>
+
+    <div class="menu-section" id="menuContainer">
+      <div class="loader"><div class="spinner"></div> Loading menu...</div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Modal -->
+  <div class="modal-overlay" id="itemModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <h3 id="modalTitle">Add Menu Item</h3>
+      <input type="hidden" id="editItemId" />
+      <div class="form-group">
+        <label>Item Name</label>
+        <input type="text" id="itemName" placeholder="e.g. Honey Latte" />
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="itemDesc" placeholder="Describe this item..."></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Price (₹)</label>
+          <input type="number" id="itemPrice" placeholder="0.00" step="0.5" min="0" />
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="itemCategory">
+            <option value="espresso">Espresso</option>
+            <option value="cold-brew">Cold Brew</option>
+            <option value="tea">Tea</option>
+            <option value="pastry">Pastry</option>
+            <option value="breakfast">Breakfast</option>
+            <option value="lunch">Lunch</option>
+            <option value="seasonal">Seasonal</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Tags (comma separated)</label>
+        <input type="text" id="itemTags" placeholder="e.g. vegan, sweet, cold" />
+      </div>
+      <div class="form-group">
+        <div class="form-check">
+          <input type="checkbox" id="itemAvailable" checked />
+          <label for="itemAvailable" style="text-transform:none;letter-spacing:0;font-size:0.95rem;">Available</label>
+        </div>
+        <div class="form-check" style="margin-top:0.5rem">
+          <input type="checkbox" id="itemPopular" />
+          <label for="itemPopular" style="text-transform:none;letter-spacing:0;font-size:0.95rem;">Mark as Popular</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveItem()">Save Item</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="/index.html" class="nav-logo">Brew<span>&</span>Co.</a></div>
+      <div class="footer-col"><h4>Navigate</h4><ul><li><a href="/index.html">Home</a></li><li><a href="/pages/menu.html">Menu</a></li><li><a href="/pages/reservation.html">Reserve</a></li></ul></div>
+      <div class="footer-col"><h4>Hours</h4><ul><li><a>Mon–Fri: 7am–9pm</a></li><li><a>Sat: 8am–10pm</a></li><li><a>Sun: 9am–8pm</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul><li><a href="mailto:hello@brewandco.in">hello@brewandco.in</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 Brew & Co.</p></div>
+  </footer>
+
+  <script src="../js/config.js"></script>
+  <script>
+    let allItems = [];
+    let currentFilter = 'all';
+
+    const categoryEmoji = { espresso:'☕', 'cold-brew':'🧊', tea:'🍵', pastry:'🥐', breakfast:'🍳', lunch:'🥗', seasonal:'🍂' };
+    const categoryLabel = { espresso:'Espresso', 'cold-brew':'Cold Brew', tea:'Tea & Alternatives', pastry:'Pastries & Baked Goods', breakfast:'Breakfast', lunch:'Lunch', seasonal:'Seasonal Specials' };
+
+    window.addEventListener('scroll', () => document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50));
+    function toggleMenu() { document.getElementById('navLinks').classList.toggle('open'); }
+
+    async function loadMenu() {
+      try {
+        const { data } = await apiFetch('/menu');
+        allItems = data;
+        if (isAdmin()) document.getElementById('adminBar').style.display = 'flex';
+        renderMenu(data);
+      } catch(e) {
+        document.getElementById('menuContainer').innerHTML = `<p style="text-align:center;color:var(--text-muted);padding:4rem">Unable to load menu. Please try again later.</p>`;
+      }
+    }
+
+    function filterMenu(cat, btn) {
+      currentFilter = cat;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filtered = cat === 'all' ? allItems : allItems.filter(i => i.category === cat);
+      renderMenu(filtered);
+    }
+
+    function renderMenu(items) {
+      const container = document.getElementById('menuContainer');
+      if (!items.length) { container.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:4rem">No items in this category yet.</p>'; return; }
+
+      const grouped = {};
+      items.forEach(item => {
+        if (!grouped[item.category]) grouped[item.category] = [];
+        grouped[item.category].push(item);
+      });
+
+      container.innerHTML = Object.entries(grouped).map(([cat, catItems]) => `
+        <div class="category-title">${categoryEmoji[cat] || '☕'} ${categoryLabel[cat] || cat}</div>
+        <div class="menu-grid">
+          ${catItems.map(item => `
+            <div class="menu-item-card ${!item.isAvailable ? 'unavailable' : ''}">
+              ${item.isPopular ? '<span class="popular-badge">★ Popular</span>' : ''}
+              <div class="item-header">
+                <h3>${item.name}</h3>
+                <span class="item-price">₹${item.price.toFixed(2)}</span>
+              </div>
+              <p class="item-desc">${item.description}</p>
+              <div class="item-footer">
+                <div class="item-tags">${item.tags.map(t=>`<span class="badge badge-gold">${t}</span>`).join('')}</div>
+                ${isAdmin() ? `<div style="display:flex;gap:0.5rem">
+                  <button class="btn btn-outline btn-sm" onclick='editItem(${JSON.stringify(item)})'>Edit</button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteItem('${item._id}')">Del</button>
+                </div>` : ''}
+              </div>
+              ${!item.isAvailable ? '<span class="badge badge-red" style="margin-top:0.5rem">Unavailable</span>' : ''}
+            </div>
+          `).join('')}
+        </div>
+      `).join('');
+    }
+
+    function openAddModal() {
+      document.getElementById('modalTitle').textContent = 'Add Menu Item';
+      document.getElementById('editItemId').value = '';
+      document.getElementById('itemName').value = '';
+      document.getElementById('itemDesc').value = '';
+      document.getElementById('itemPrice').value = '';
+      document.getElementById('itemCategory').value = 'espresso';
+      document.getElementById('itemTags').value = '';
+      document.getElementById('itemAvailable').checked = true;
+      document.getElementById('itemPopular').checked = false;
+      document.getElementById('itemModal').classList.add('open');
+    }
+
+    function editItem(item) {
+      document.getElementById('modalTitle').textContent = 'Edit Menu Item';
+      document.getElementById('editItemId').value = item._id;
+      document.getElementById('itemName').value = item.name;
+      document.getElementById('itemDesc').value = item.description;
+      document.getElementById('itemPrice').value = item.price;
+      document.getElementById('itemCategory').value = item.category;
+      document.getElementById('itemTags').value = item.tags.join(', ');
+      document.getElementById('itemAvailable').checked = item.isAvailable;
+      document.getElementById('itemPopular').checked = item.isPopular;
+      document.getElementById('itemModal').classList.add('open');
+    }
+
+    function closeModal() { document.getElementById('itemModal').classList.remove('open'); }
+
+    async function saveItem() {
+      const id = document.getElementById('editItemId').value;
+      const body = {
+        name: document.getElementById('itemName').value,
+        description: document.getElementById('itemDesc').value,
+        price: parseFloat(document.getElementById('itemPrice').value),
+        category: document.getElementById('itemCategory').value,
+        tags: document.getElementById('itemTags').value.split(',').map(t=>t.trim()).filter(Boolean),
+        isAvailable: document.getElementById('itemAvailable').checked,
+        isPopular: document.getElementById('itemPopular').checked,
+      };
+      try {
+        if (id) {
+          await apiFetch(`/menu/${id}`, { method: 'PUT', body: JSON.stringify(body) });
+          showToast('Menu item updated!');
+        } else {
+          await apiFetch('/menu', { method: 'POST', body: JSON.stringify(body) });
+          showToast('Menu item added!');
+        }
+        closeModal();
+        loadMenu();
+      } catch(e) { showToast(e.message, 'error'); }
+    }
+
+    async function deleteItem(id) {
+      if (!confirm('Delete this menu item?')) return;
+      try {
+        await apiFetch(`/menu/${id}`, { method: 'DELETE' });
+        showToast('Item deleted');
+        loadMenu();
+      } catch(e) { showToast(e.message, 'error'); }
+    }
+
+    loadMenu();
+  </script>
+</body>
+</html>

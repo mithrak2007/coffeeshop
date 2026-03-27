@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brew & Co. — Artisan Coffee House</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/home.css" />
+</head>
+<body>
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="/index.html" class="nav-logo">Brew<span>&</span>Co.</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/index.html" class="active">Home</a></li>
+      <li><a href="/pages/menu.html">Menu</a></li>
+      <li><a href="/pages/reservation.html">Reserve</a></li>
+      <li><a href="/pages/about.html">About</a></li>
+      <li><a href="/pages/contact.html">Contact</a></li>
+    </ul>
+    <div id="nav-auth"></div>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-grain"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Est. 2019 · Bengaluru</p>
+      <h1>Where Every<br><em>Sip Tells</em><br>a Story.</h1>
+      <p class="hero-sub">Artisan coffee, seasonal food, and a space that feels like home. Sourced with care, brewed with passion.</p>
+      <div class="hero-cta">
+        <a href="/pages/menu.html" class="btn btn-primary">Explore Menu</a>
+        <a href="/pages/reservation.html" class="btn btn-outline">Reserve a Table</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><strong>12+</strong><span>Origins</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><strong>50+</strong><span>Menu Items</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><strong>5★</strong><span>Rated</span></div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section features-section">
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">☕</div>
+        <h3>Single Origin Beans</h3>
+        <p>Sourced directly from farms in Ethiopia, Colombia and Coorg — every cup traceable, every farmer known.</p>
+      </div>
+      <div class="feature-card featured">
+        <div class="feature-icon">🌿</div>
+        <h3>Seasonal Menu</h3>
+        <p>Our kitchen celebrates what's fresh. Menus shift with the seasons, featuring locally grown produce.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎵</div>
+        <h3>Curated Atmosphere</h3>
+        <p>Handpicked playlists, warm lighting, and unhurried pace. A place to think, work, and simply be.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- POPULAR MENU PREVIEW -->
+  <section class="section menu-preview-section">
+    <div class="section-header">
+      <span class="eyebrow">From Our Kitchen</span>
+      <h2>Community Favourites</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="menu-preview-grid" id="popularItems">
+      <div class="loader"><div class="spinner"></div> Loading menu...</div>
+    </div>
+    <div style="text-align:center; margin-top:3rem;">
+      <a href="/pages/menu.html" class="btn btn-outline">View Full Menu →</a>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE SECTION -->
+  <section class="section experience-section">
+    <div class="experience-content">
+      <span class="eyebrow">The Space</span>
+      <h2>More Than Coffee.<br>It's a <em>Ritual.</em></h2>
+      <p>We believe a great coffee shop is more than the drinks. It's about the light through the window at 9am, the hum of conversation, the smell of fresh pastry. We've spent years crafting every detail so you can just arrive and exhale.</p>
+      <a href="/pages/about.html" class="btn btn-primary">Our Story</a>
+    </div>
+    <div class="experience-visual">
+      <div class="exp-card exp-card-1">
+        <div class="exp-number">24hr</div>
+        <div class="exp-label">Cold Brew Steep</div>
+      </div>
+      <div class="exp-card exp-card-2">
+        <div class="exp-number">93°</div>
+        <div class="exp-label">Brew Temperature</div>
+      </div>
+      <div class="exp-card exp-card-3">
+        <div class="exp-number">6am</div>
+        <div class="exp-label">First Pour Daily</div>
+      </div>
+      <div class="exp-blob"></div>
+    </div>
+  </section>
+
+  <!-- RESERVATION CTA -->
+  <section class="section reserve-cta-section">
+    <div class="reserve-cta-inner">
+      <span class="eyebrow">Book Your Spot</span>
+      <h2>Ready for a Perfect Morning?</h2>
+      <p>Reserve your table in seconds. Whether it's a quiet breakfast for one or a brunch for eight — we'll have it ready.</p>
+      <a href="/pages/reservation.html" class="btn btn-primary">Book a Table</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/index.html" class="nav-logo">Brew<span>&</span>Co.</a>
+        <p>An artisan coffee house in the heart of Bengaluru. Where every sip tells a story.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="/index.html">Home</a></li>
+          <li><a href="/pages/menu.html">Menu</a></li>
+          <li><a href="/pages/reservation.html">Reservations</a></li>
+          <li><a href="/pages/about.html">About</a></li>
+          <li><a href="/pages/contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Hours</h4>
+        <ul>
+          <li><a>Mon–Fri: 7am – 9pm</a></li>
+          <li><a>Saturday: 8am – 10pm</a></li>
+          <li><a>Sunday: 9am – 8pm</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Find Us</h4>
+        <ul>
+          <li><a>12 Church Street</a></li>
+          <li><a>Bengaluru 560001</a></li>
+          <li><a href="mailto:hello@brewandco.in">hello@brewandco.in</a></li>
+          <li><a href="tel:+918012345678">+91 80 1234 5678</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Brew & Co. All rights reserved.</p>
+      <p>Made with ☕ in Bengaluru</p>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('open');
+    }
+
+    // Load popular items
+    async function loadPopularItems() {
+      try {
+        const { data } = await apiFetch('/menu?available=true');
+        const popular = data.filter(i => i.isPopular).slice(0, 6);
+        const grid = document.getElementById('popularItems');
+        if (!popular.length) { grid.innerHTML = '<p style="text-align:center;color:var(--text-muted)">Menu coming soon.</p>'; return; }
+        grid.innerHTML = popular.map(item => `
+          <div class="menu-preview-card card">
+            <div class="mpc-emoji">${getCategoryEmoji(item.category)}</div>
+            <div class="mpc-body">
+              <div class="mpc-top">
+                <h3>${item.name}</h3>
+                <span class="mpc-price">₹${item.price.toFixed(2)}</span>
+              </div>
+              <p>${item.description}</p>
+              <div class="mpc-tags">${item.tags.map(t=>`<span class="badge badge-gold">${t}</span>`).join('')}</div>
+            </div>
+          </div>
+        `).join('');
+      } catch(e) {
+        document.getElementById('popularItems').innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:3rem">
+            <p>☕ Menu preview unavailable — <a href="/pages/menu.html" style="color:var(--gold)">visit menu page</a></p>
+          </div>`;
+      }
+    }
+
+    function getCategoryEmoji(cat) {
+      const map = { espresso:'☕', 'cold-brew':'🧊', tea:'🍵', pastry:'🥐', breakfast:'🍳', lunch:'🥗', seasonal:'🍂' };
+      return map[cat] || '☕';
+    }
+
+    loadPopularItems();
+  </script>
+</body>
+</html>
